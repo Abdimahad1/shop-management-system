@@ -219,94 +219,102 @@ export const CustomerLoanScreen: React.FC = () => {
         </div>
       </div>
 
-      {/* Payment Bottom Sheet with Numeric Keypad - FIXED POSITIONING */}
-      {selectedCustomer && (
+        {/* Payment Bottom Sheet with Numeric Keypad - IMPROVED LAYOUT */}
+        {selectedCustomer && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end">
-          <div className="bg-white w-full rounded-t-3xl animate-slide-up max-h-[85vh] overflow-y-auto">
-            {/* Header - Now visible */}
+            <div className="bg-white w-full rounded-t-3xl animate-slide-up max-h-[85vh] overflow-y-auto">
+            
+            {/* Header - Close button only */}
             <div className="sticky top-0 bg-white rounded-t-3xl z-10">
-              <div className="p-6 border-b border-gray-100">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-xl font-bold text-gray-800">RECORD PAYMENT</h2>
-                  <button 
+                <div className="flex justify-end p-4">
+                <button 
                     onClick={() => setSelectedCustomer(null)}
                     className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                  >
+                >
                     <X className="w-6 h-6 text-gray-500" />
-                  </button>
+                </button>
                 </div>
-                <div className="mt-3">
-                  <p className="text-gray-600 text-sm">{selectedCustomer.name}</p>
-                  <p className="text-3xl font-bold text-orange-600 mt-1">${selectedCustomer.balance.toFixed(2)}</p>
-                  <p className="text-xs text-gray-400">Current Balance</p>
-                </div>
-              </div>
             </div>
 
-            {/* Amount Display */}
-            <div className="p-6 border-b border-gray-100">
-              <p className="text-sm text-gray-500 mb-2">AMOUNT RECEIVED</p>
-              <p className="text-4xl font-bold text-gray-800">${paymentAmount || '0'}</p>
+            {/* Customer Name */}
+            <div className="text-center px-6 mb-6">
+                <p className="text-gray-500 text-sm">RECORD PAYMENT FOR</p>
+                <p className="text-2xl font-bold text-gray-800">{selectedCustomer.name}</p>
+            </div>
+
+            {/* Current Balance & Amount Received - SAME ROW */}
+            <div className="grid grid-cols-2 gap-4 px-6 mb-6">
+                {/* Current Balance Card */}
+                <div className="bg-orange-50 rounded-2xl p-4 text-center border border-orange-200">
+                <p className="text-xs text-orange-600 font-medium mb-1">CURRENT BALANCE</p>
+                <p className="text-2xl font-bold text-orange-600">${selectedCustomer.balance.toFixed(2)}</p>
+                </div>
+                
+                {/* Amount Received Card */}
+                <div className="bg-emerald-50 rounded-2xl p-4 text-center border border-emerald-200">
+                <p className="text-xs text-emerald-600 font-medium mb-1">AMOUNT RECEIVED</p>
+                <p className="text-2xl font-bold text-emerald-600">${paymentAmount || '0.00'}</p>
+                </div>
             </div>
 
             {/* Numeric Keypad */}
-            <div className="p-6 pb-8">
-              <div className="grid grid-cols-3 gap-3 mb-6">
+            <div className="px-6 pb-8">
+                <div className="grid grid-cols-3 gap-3 mb-6">
                 {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((key) => (
-                  <button
+                    <button
                     key={key}
                     onClick={() => handleNumberClick(key)}
                     className="py-4 text-2xl font-semibold text-gray-700 bg-gray-50 rounded-xl hover:bg-gray-100 active:scale-95 transition-all shadow-sm"
-                  >
+                    >
                     {key}
-                  </button>
+                    </button>
                 ))}
                 <button
-                  onClick={() => handleNumberClick('0')}
-                  className="py-4 text-2xl font-semibold text-gray-700 bg-gray-50 rounded-xl hover:bg-gray-100 active:scale-95 transition-all shadow-sm"
+                    onClick={() => handleNumberClick('0')}
+                    className="py-4 text-2xl font-semibold text-gray-700 bg-gray-50 rounded-xl hover:bg-gray-100 active:scale-95 transition-all shadow-sm"
                 >
-                  0
+                    0
                 </button>
                 <button
-                  onClick={handleDeleteLast}
-                  className="py-4 text-xl font-semibold text-gray-700 bg-gray-50 rounded-xl hover:bg-gray-100 active:scale-95 transition-all shadow-sm"
+                    onClick={handleDeleteLast}
+                    className="py-4 text-xl font-semibold text-gray-700 bg-gray-50 rounded-xl hover:bg-gray-100 active:scale-95 transition-all shadow-sm"
                 >
-                  ⌫
+                    ⌫
                 </button>
                 <button
-                  onClick={handleClear}
-                  className="py-4 text-xl font-semibold text-red-600 bg-red-50 rounded-xl hover:bg-red-100 active:scale-95 transition-all shadow-sm"
+                    onClick={handleClear}
+                    className="py-4 text-xl font-semibold text-red-600 bg-red-50 rounded-xl hover:bg-red-100 active:scale-95 transition-all shadow-sm"
                 >
-                  C
+                    C
                 </button>
-              </div>
+                </div>
 
-              {/* Action Buttons */}
-              <div className="flex gap-3">
+                {/* Action Buttons */}
+                <div className="flex gap-3 mb-3">
                 <button
-                  onClick={handleFullPaymentClick}
-                  className="flex-1 py-4 border-2 border-emerald-500 text-emerald-600 rounded-xl font-semibold text-base hover:bg-emerald-50 transition-all btn-3d"
+                    onClick={handleFullPaymentClick}
+                    className="flex-1 py-4 border-2 border-emerald-500 text-emerald-600 rounded-xl font-semibold text-base hover:bg-emerald-50 transition-all btn-3d"
                 >
-                  Mark as Full Paid (${selectedCustomer.balance.toFixed(2)})
+                    Full Paid
                 </button>
                 <button
-                  onClick={handlePaymentClick}
-                  className="flex-1 btn-3d bg-emerald-500 text-white py-4 rounded-xl font-semibold text-base hover:bg-emerald-600 transition-all"
+                    onClick={handlePaymentClick}
+                    className="flex-1 btn-3d bg-emerald-500 text-white py-4 rounded-xl font-semibold text-base hover:bg-emerald-600 transition-all"
                 >
-                  Pay ${paymentAmount || '0'}
+                    Pay ${paymentAmount || '0.00'}
                 </button>
-              </div>
-              
-              <button
+                </div>
+                
+                <button
                 onClick={() => setSelectedCustomer(null)}
-                className="w-full mt-4 py-3 text-gray-500 font-medium hover:text-gray-700 transition-colors"
-              >
+                className="w-full py-3 text-gray-500 font-medium hover:text-gray-700 transition-colors"
+                >
                 Cancel
-              </button>
+                </button>
             </div>
-          </div>
+            </div>
         </div>
-      )}
+        )}
 
       {/* Warning Modal */}
       {showWarningModal && (
