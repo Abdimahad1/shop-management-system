@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp, Users, Package, Calendar, Download, ChevronRight, DollarSign, CreditCard, Award, Clock } from 'lucide-react';
+import { TrendingUp, Users, Download, ChevronRight, DollarSign, CreditCard, Award, Clock } from 'lucide-react';
 
 export const ReportsScreen: React.FC = () => {
   const [period, setPeriod] = useState<'today' | 'week' | 'month'>('today');
@@ -127,7 +127,7 @@ export const ReportsScreen: React.FC = () => {
           </div>
           
           <div className="space-y-3">
-            {topProducts.map((product, index) => (
+            {topProducts.map((product) => (
               <div key={product.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center text-lg">

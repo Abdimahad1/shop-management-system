@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrendingUp, Users, AlertTriangle, Clock, ChevronRight, Plus, UserPlus, Package, ArrowRight, DollarSign, CreditCard, ShoppingBag, Wallet } from 'lucide-react';
+import { TrendingUp, Users, AlertTriangle, ChevronRight, Plus, UserPlus, ArrowRight, DollarSign, CreditCard, ShoppingBag, Wallet } from 'lucide-react';
 import { mockActivity } from '@/data/mockData';
 import { useNavigate } from 'react-router-dom';
 

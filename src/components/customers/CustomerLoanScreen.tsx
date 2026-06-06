@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Phone, MapPin, X, CheckCircle, AlertCircle, UserPlus, DollarSign, CreditCard, Trash2 } from 'lucide-react';
+import { Search, Phone, X, CheckCircle, AlertCircle, UserPlus } from 'lucide-react';
 import type { Customer } from '@/types';
 
 // Somali customer data

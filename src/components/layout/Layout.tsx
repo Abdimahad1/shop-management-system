@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { LayoutDashboard, ShoppingCart, Users, Package, BarChart3, LogOut, Store, Bell, Settings } from 'lucide-react';
+import { LayoutDashboard, ShoppingCart, Users, Package, BarChart3, LogOut, Store, Bell } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;

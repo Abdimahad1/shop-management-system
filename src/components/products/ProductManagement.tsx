@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Edit2, Trash2, Minus, Plus as PlusIcon, X, Package, Search, AlertCircle, CheckCircle } from 'lucide-react';
+import { Plus, Edit2, Trash2, Minus, Plus as PlusIcon, X, AlertCircle, CheckCircle } from 'lucide-react';
 import { mockProducts } from '@/data/mockData';
 import type { Product } from '@/types';
 
