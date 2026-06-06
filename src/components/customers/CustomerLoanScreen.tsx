@@ -19,6 +19,8 @@ export const CustomerLoanScreen: React.FC = () => {
   const [showNewCustomerModal, setShowNewCustomerModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showWarningModal, setShowWarningModal] = useState(false);
+  const [warningMessage, setWarningMessage] = useState('');
   const [confirmAction, setConfirmAction] = useState<{ type: 'payment' | 'full_payment'; amount: number } | null>(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [newCustomer, setNewCustomer] = useState({ name: '', phone: '', address: '', notes: '' });
@@ -50,13 +52,15 @@ export const CustomerLoanScreen: React.FC = () => {
 
   const handlePaymentClick = () => {
     if (!paymentAmount || parseInt(paymentAmount) === 0) {
-      alert('⚠️ Please enter an amount');
+      setWarningMessage('Please enter an amount');
+      setShowWarningModal(true);
       return;
     }
     
     const amount = parseInt(paymentAmount);
     if (selectedCustomer && amount > selectedCustomer.balance) {
-      alert(`⚠️ Payment cannot exceed balance of $${selectedCustomer.balance}`);
+      setWarningMessage(`Payment cannot exceed balance of $${selectedCustomer.balance}`);
+      setShowWarningModal(true);
       return;
     }
     
@@ -93,12 +97,14 @@ export const CustomerLoanScreen: React.FC = () => {
 
   const handleCreateCustomer = () => {
     if (!newCustomer.name || !newCustomer.phone) {
-      alert('Please fill in name and phone number');
+      setWarningMessage('Please fill in name and phone number');
+      setShowWarningModal(true);
       return;
     }
     
     if (!/^\d{10}$/.test(newCustomer.phone)) {
-      alert('Please enter a valid 10-digit phone number');
+      setWarningMessage('Please enter a valid 10-digit phone number');
+      setShowWarningModal(true);
       return;
     }
     
@@ -142,7 +148,7 @@ export const CustomerLoanScreen: React.FC = () => {
           <h1 className="text-2xl font-bold text-gray-800">Customer Loans</h1>
           <div className="flex items-center justify-between mt-2">
             <p className="text-sm text-gray-500">Total outstanding</p>
-            <p className="text-2xl font-bold text-orange-600">${totalOutstanding}</p>
+            <p className="text-2xl font-bold text-orange-600">${totalOutstanding.toFixed(2)}</p>
           </div>
         </div>
       </div>
@@ -194,7 +200,7 @@ export const CustomerLoanScreen: React.FC = () => {
                       <div className="text-right">
                         <p className={`text-xs font-medium ${status.color}`}>{status.text}</p>
                         <p className="text-xl font-bold text-orange-600 mt-1">
-                          {status.isOverdue ? 'OVERDUE' : 'OWES'} ${customer.balance}
+                          {status.isOverdue ? 'OVERDUE' : 'OWES'} ${customer.balance.toFixed(2)}
                         </p>
                       </div>
                     </div>
@@ -213,25 +219,27 @@ export const CustomerLoanScreen: React.FC = () => {
         </div>
       </div>
 
-      {/* Payment Bottom Sheet with Numeric Keypad */}
+      {/* Payment Bottom Sheet with Numeric Keypad - FIXED POSITIONING */}
       {selectedCustomer && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end">
-          <div className="bg-white w-full rounded-t-3xl animate-slide-up">
-            {/* Header */}
-            <div className="p-6 border-b border-gray-100">
-              <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold text-gray-800">RECORD PAYMENT</h2>
-                <button 
-                  onClick={() => setSelectedCustomer(null)}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                >
-                  <X className="w-6 h-6 text-gray-500" />
-                </button>
-              </div>
-              <div className="mt-3">
-                <p className="text-gray-600 text-sm">{selectedCustomer.name}</p>
-                <p className="text-3xl font-bold text-orange-600 mt-1">${selectedCustomer.balance}</p>
-                <p className="text-xs text-gray-400">Current Balance</p>
+          <div className="bg-white w-full rounded-t-3xl animate-slide-up max-h-[85vh] overflow-y-auto">
+            {/* Header - Now visible */}
+            <div className="sticky top-0 bg-white rounded-t-3xl z-10">
+              <div className="p-6 border-b border-gray-100">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-bold text-gray-800">RECORD PAYMENT</h2>
+                  <button 
+                    onClick={() => setSelectedCustomer(null)}
+                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  >
+                    <X className="w-6 h-6 text-gray-500" />
+                  </button>
+                </div>
+                <div className="mt-3">
+                  <p className="text-gray-600 text-sm">{selectedCustomer.name}</p>
+                  <p className="text-3xl font-bold text-orange-600 mt-1">${selectedCustomer.balance.toFixed(2)}</p>
+                  <p className="text-xs text-gray-400">Current Balance</p>
+                </div>
               </div>
             </div>
 
@@ -242,7 +250,7 @@ export const CustomerLoanScreen: React.FC = () => {
             </div>
 
             {/* Numeric Keypad */}
-            <div className="p-6">
+            <div className="p-6 pb-8">
               <div className="grid grid-cols-3 gap-3 mb-6">
                 {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((key) => (
                   <button
@@ -279,7 +287,7 @@ export const CustomerLoanScreen: React.FC = () => {
                   onClick={handleFullPaymentClick}
                   className="flex-1 py-4 border-2 border-emerald-500 text-emerald-600 rounded-xl font-semibold text-base hover:bg-emerald-50 transition-all btn-3d"
                 >
-                  Mark as Full Paid (${selectedCustomer.balance})
+                  Mark as Full Paid (${selectedCustomer.balance.toFixed(2)})
                 </button>
                 <button
                   onClick={handlePaymentClick}
@@ -291,9 +299,30 @@ export const CustomerLoanScreen: React.FC = () => {
               
               <button
                 onClick={() => setSelectedCustomer(null)}
-                className="w-full mt-3 py-3 text-gray-500 font-medium hover:text-gray-700 transition-colors"
+                className="w-full mt-4 py-3 text-gray-500 font-medium hover:text-gray-700 transition-colors"
               >
                 Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Warning Modal */}
+      {showWarningModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-sm w-full p-6 animate-scale-in">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-4">
+                <AlertCircle className="w-8 h-8 text-orange-500" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Warning</h3>
+              <p className="text-gray-600 mb-6">{warningMessage}</p>
+              <button
+                onClick={() => setShowWarningModal(false)}
+                className="w-full btn-3d bg-emerald-500 text-white py-3 rounded-xl font-semibold"
+              >
+                OK
               </button>
             </div>
           </div>
@@ -316,7 +345,7 @@ export const CustomerLoanScreen: React.FC = () => {
                 <p className="text-sm text-gray-500">Customer</p>
                 <p className="font-semibold text-gray-800">{selectedCustomer?.name}</p>
                 <p className="text-sm text-gray-500 mt-2">Amount</p>
-                <p className="text-xl font-bold text-emerald-600">${confirmAction?.amount}</p>
+                <p className="text-xl font-bold text-emerald-600">${confirmAction?.amount.toFixed(2)}</p>
               </div>
               <div className="flex gap-3 w-full">
                 <button
@@ -344,7 +373,7 @@ export const CustomerLoanScreen: React.FC = () => {
       {showNewCustomerModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end">
           <div className="bg-white w-full rounded-t-3xl animate-slide-up max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b border-gray-100 sticky top-0 bg-white rounded-t-3xl">
+            <div className="p-6 border-b border-gray-100 sticky top-0 bg-white rounded-t-3xl z-10">
               <div className="flex justify-between items-center">
                 <h2 className="text-xl font-bold text-gray-800">New Loan Customer</h2>
                 <button 
@@ -356,7 +385,7 @@ export const CustomerLoanScreen: React.FC = () => {
               </div>
             </div>
 
-            <div className="p-6 space-y-4">
+            <div className="p-6 space-y-4 pb-8">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">CUSTOMER NAME *</label>
                 <input
