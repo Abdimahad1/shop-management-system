@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --border: 214.3 31.8% 91.4%;
+    --radius: 0.5rem;
+  }
+  
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  body {
+    @apply antialiased;
+  }
+}
+
+@layer components {
+  /* 3D Button Style - Enhanced */
+  .btn-3d {
+    @apply border-b-[3px] active:border-b-0 active:translate-y-[2px] transition-all duration-150 ease-out cursor-pointer;
+  }
+  
+  /* 3D Button with primary color */
+  .btn-3d-primary {
+    @apply btn-3d bg-emerald-500 border-emerald-700 text-white hover:bg-emerald-600;
+  }
+  
+  /* 3D Button with secondary color */
+  .btn-3d-secondary {
+    @apply btn-3d bg-white border-gray-300 text-gray-700 hover:bg-gray-50;
+  }
+  
+  /* 3D Card Style - Enhanced */
+  .card-3d {
+    @apply shadow-[4px_4px_0px_0px_rgba(0,0,0,0.08)] border border-gray-200 bg-white rounded-xl transition-all duration-200 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.1)] hover:-translate-y-0.5;
+  }
+  
+  /* 3D Card with hover effect */
+  .card-3d-hover {
+    @apply card-3d cursor-pointer hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,0.12)] hover:-translate-y-1;
+  }
+  
+  /* Small 3D shadow */
+  .shadow-3d-sm {
+    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* Medium 3D shadow */
+  .shadow-3d-md {
+    box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Large 3D shadow */
+  .shadow-3d-lg {
+    box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 0.12);
+  }
+  
+  /* Touch target minimum size */
+  .touch-target {
+    @apply min-h-[48px] min-w-[48px] flex items-center justify-center;
+  }
+  
+  /* Smooth transitions */
+  .transition-smooth {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+  }
+}
+
+/* Animations */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.2s ease-out;
+}
+
+.animate-pulse-slow {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Loading skeleton animation */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.skeleton {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+  background-size: 1000px 100%;
+}
